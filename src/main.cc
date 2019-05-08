@@ -10,16 +10,22 @@ int main(int argc, const char **argv) {
         cout << "usage: " << *argv << " <qnp-file> <num-bits-per-counter> <loop-nesting> <prefix>" << endl;
         exit(0);
     }
-    string qnp_fname = argv[1];
+
+    // Extract all CLI parameters
+    string qnp_fname = argv[1];                 // 1st argument is the file name
     int num_bits_per_counter = atoi(argv[2]);
     int loop_nesting = atoi(argv[3]);
     string prefix = argv[4];
 
+    // Read the QNP file and build QNP Problem object qnp
     ifstream ifs(qnp_fname);
     QNP::Problem *qnp = QNP::Problem::read(ifs);
     ifs.close();
-    //cout << *qnp;
-    //
+    //cout << *qnp; // just for debugging, report the QNP
+
+
+    //  Build FOND planning Problem object fond from QNP Problem qnp
+    // Here is where translation is done
     QNP::Problem *fond = qnp->translate(num_bits_per_counter, loop_nesting);
     //cout << *fond;
 
