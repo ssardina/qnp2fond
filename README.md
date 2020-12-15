@@ -6,11 +6,19 @@ The translator is invoked using
 qnp2fond <qnp-file> <counter-capacity> <loop-nesting> <prefix>
 ```
 
-where the first argument is the name of a `.qnp` file (see below), 
-the two additional arguments are non-negative integers, typicall
-small ones such as 0, 1 or 2, and the last argument is the prefix
-for the generated files (domain and problem files).
+where:
+ 
+* `qnp-file`: the name of a `.qnp` file representing a QNP problem; see below for its format.
+* `loop-nesting`: size of the stack to handle nested loops (number of constants of type `depth`).
+    * one constant per stack level, e.g., `d0`, `d1`, ...,  `dk` if stack of size `k`.
+    * stack will contain numeric variables and dictate which variable can be decreased (the one at the top of the 
+    stack) and which ones can be increased (ones not in stack at all). 
+* `counter-capacity`: number of bits required for the various counters (number of constants of type `bit`)
+    * each stack level will have an associated counter; counter for empty stack is "stage counter".
+    * each counter of size up to `n` will be represented with `log(n)` bits: `b0`, `b1`, ...
+* `prefix`: prefix string for the generated domain and problem files.
 
+Both `counter-capacity` and `loop-nesting` are non-negative integers, typically small ones such as 0, 1 or 2.
 
 ## QNP Format
 
@@ -67,7 +75,7 @@ The rest of the file contains the **description of the actions**.
 
 It starts with a line (i.e., line 5) explicitly stating the number of actions in the file.
 
-Each **action** is then described with **three lines**: 
+Each **action** is then described with three lines: 
 
 1. the first line is the name of the action;
 2. the second line gives the preconditions of the action; and
